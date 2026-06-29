@@ -1,4 +1,4 @@
-# Weather Data Analyzer
+# Weather Data Analyser
 
 A web application for reading and analyzing current weather data and weather forecasts for a chosen city. It also lets you save the current weather and forecast to a local database for later historical analysis.
 
