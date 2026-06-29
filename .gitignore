@@ -1,0 +1,7 @@
+# .gitignore
+.env
+__pycache__/
+.vscode/
+*.db
+docker_data/
+.idea/

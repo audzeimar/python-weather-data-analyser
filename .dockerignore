@@ -1,0 +1,23 @@
+.env
+
+.git
+.gitignore
+
+*.pyc
+*.pyo
+*.pyd
+
+# Baza danych — będzie w volume, nie w obrazie
+*.db
+
+# Cache testów i pytest
+.pytest_cache/
+tests/__pycache__/
+
+# Pliki konfiguracyjne IDE
+.vscode/
+.idea/
+
+# Pliki tymczasowe Windows
+Thumbs.db
+desktop.ini

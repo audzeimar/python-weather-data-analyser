@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  weather-app:
+    # buduj obraz z Dockerfile w bieżącym katalogu
+    build: .
+
+    # nazwa kontenera
+    container_name: analiza-pogody
+
+    # przekierowanie portów: host:kontener
+    ports:
+      - "8501:8501"
+
+    # zmienne środowiskowe przekazywane do kontenera
+    environment:
+      # klucz API — pobierany z pliku .env na hoście 
+      - OPEN_WEATHER_MAP_KEY=${OPEN_WEATHER_MAP_KEY}
+
+      # ścieżki do plików wewnątrz kontenera (w zamontowanym volume)
+      - CONFIG_FILE=/app/data/settings_config.json
+      - DB_PATH=/app/data/weather_history.db
+
+    # volumes = foldery współdzielone między hostem a kontenerem
+    # dzięki temu baza danych i ustawienia przeżywają restart kontenera
+    volumes:
+      - ./docker_data:/app/data
+
+    # restart automatyczny jeśli kontener padnie
+    restart: unless-stopped
