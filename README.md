@@ -1,72 +1,71 @@
-# Aplikacja do analizy danych pogodowych
+# Weather Data Analyzer
 
-Aplikacja umożliwiająca analizę i odczyt aktualnych danych pogodowych oraz prognozy pogody dla wybranego miasta. Umożliwia również zapisywanie obecnych danych pogodowych i prognozy do lokalnej bazy danych w celu późniejszej analizy historycznej.
+A web application for reading and analyzing current weather data and weather forecasts for a chosen city. It also lets you save the current weather and forecast to a local database for later historical analysis.
 
-Dane pogodowe pobierane są z serwisu [OpenWeatherMap](https://openweathermap.org/)
+Weather data is fetched from OpenWeatherMap(https://openweathermap.org/)
 
 ---
 
-## Struktura projektu
+## Project structure
 
 ```
-├── Application.py          # punkt wejścia — kontroler aplikacji
+├── Application.py          # entry point — application controller
 ├── models/
-│   ├── weather_model.py    # komunikacja z API, modele danych (dataclassy)
-│   └── database_model.py   # warstwa bazy danych 
+│   ├── weather_model.py    # API communication, data models (dataclasses)
+│   └── database_model.py   # database layer
 ├── data_processors/
-│   ├── forecast_data_analyzer.py  # analiza statystyczna i generowanie wykresów
-│   └── DBDataProcessor.py         # przetwarzanie danych z bazy do wyświetlenia
+│   ├── forecast_data_analyzer.py  # statistical analysis and chart generation
+│   └── DBDataProcessor.py         # processes database data for display
 ├── ui_classes/
-│   ├── MainUI.py           # główny widok, nagłówek, zakładki
-│   ├── ForecastUI.py       # zakładka prognozy pogody
-│   ├── PlotsUI.py          # zakładka wykresów
-│   ├── StatsUI.py          # zakładka statystyk
-│   ├── SettingsUI.py       # panel ustawień
-│   └── WeatherHistoryUI.py # zakładka historii danych
+│   ├── MainUI.py           # main view, header, tabs
+│   ├── ForecastUI.py       # weather forecast tab
+│   ├── PlotsUI.py          # charts tab
+│   ├── StatsUI.py          # statistics tab
+│   ├── SettingsUI.py       # settings panel
+│   └── WeatherHistoryUI.py # data history tab
 ├── utils/
-│   ├── ApplicationState.py   # zarządzanie stanem sesji
-│   ├── session_cache.py      # cache wyników z TTL
-│   ├── measurement_units.py  # definicje jednostek (metryczne / imperialne)
-│   └── ui_helpers.py         # pomocnicze funkcje renderowania wykresów
+│   ├── ApplicationState.py   # session state management
+│   ├── session_cache.py      # results cache with TTL
+│   ├── measurement_units.py  # unit definitions (metric / imperial)
+│   └── ui_helpers.py         # helper functions for rendering charts
 ├── tests/
-│   └── test_weather_app.py # testy jednostkowe (pytest)
+│   └── test_weather_app.py # unit tests (pytest)
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
 ├── .env.example
-└── start.bat               # skrypt uruchomieniowy dla Windows
+└── start.bat               # launch script for Windows
 ```
 
 ---
 
-## Insturkcja instalacji
-1. Pobierz archiwum z repozytorium i rozpakuj je.
-2. Stwórz plik .env zgodnie z szablonem .env.example
-3. Otwórz plik `.env` i wpisz swój klucz API OpenWeatherMap:
+## Installation
+1. Download the repository archive and unpack it.
+2. Create a .env file based on the .env.example template.
+3. Open the .env file and enter your OpenWeatherMap API key:
    ```
-   OPEN-WEATHER-MAP-KEY=twój_klucz_tutaj
+   OPEN_WEATHER_MAP_KEY=your_key_here
    ```
-   Darmowy klucz uzyskasz po rejestracji na [openweathermap.org](https://openweathermap.org/api).
+   You can get a free key after registering at openweathermap.org (https://openweathermap.org/api).
 
 ---
 
-## Instrukcja uruchomienia
+## Running the application
 
-Aplikację można uruchomić na dwa sposoby:
+The application can be started in two ways.
 
-### Sposób 1: Docker (zalecany, wymaga instalacji Dockera)
-1. Otwórz terminal w folderze z aplikacją
-2. Wpisz w terminalu:
+### Option 1: Docker (recommended, requires Docker)
+1. Open a terminal in the application folder.
+2. Run:
    ```
    docker compose up --build
    ```
-3. Otwórz przeglądarkę pod adresem **http://localhost:8501**.
+3. Open your browser at **http://localhost:8501**.
 
-### Sposób 2: ręczne uruchomienie (wymaga instalacji pythona i pip)
+### Option 2: Manual run (requires Python and pip)
 
-1. Otwórz terminal w folderze z aplikacją
-
-2. *(Opcjonalnie)* Utwórz środowisko wirtualne i aktywuj je:
+1. Open a terminal in the application folder.
+2. *(Optional)* Create and activate a virtual environment:
    **Windows**:
    ```cmd
    python -m venv venv
@@ -77,14 +76,12 @@ Aplikację można uruchomić na dwa sposoby:
    python3 -m venv venv
    source venv/bin/activate
    ```
-
-3. Zainstaluj wymagane biblioteki:
+3. Install the required libraries:
    ```
    pip install -r requirements.txt
    ```
-
-4. Uruchom aplikację:
-   **Windows** — uruchom plik `start.bat`, lub w terminalu:
+4. Run the application:
+   **Windows** — run start.bat, or in the terminal:
    ```
    python -m streamlit run Application.py
    ```
@@ -93,77 +90,68 @@ Aplikację można uruchomić na dwa sposoby:
    python3 -m streamlit run Application.py
    ```
 
-Aplikacja otwiera się w przeglądarce webowej pod adresem http://localhost:8501. Okno terminala musi pozostać otwarte — jego zamknięcie zatrzymuje aplikację.
+The application opens in your web browser at http://localhost:8501. The terminal window must stay open — closing it stops the application.
 
 ---
 
-## Instrukcja obsługi
+## User guide
 
-### Wyszukiwanie danych pogodowych
+### Searching for weather data
 
-Po uruchomieniu aplikacji wybierz tryb wyszukiwania:
+After launching the app, choose a search mode:
 
-- **Nazwa Miasta** — wpisz nazwę miasta (np. `Wrocław`, `London`).
-- **Kod Pocztowy** — wpisz kod pocztowy i dwuliterowy kod kraju (np. `50-001`, `PL`).
+- **City name** — type a city name (e.g. Wrocław, London).
+- **Postal code** — ype a postal code and a two-letter country code (e.g. 50-001, PL).
 
-Następnie kliknij przycisk **„Wyszukaj dane pogodowe"**. Wyniki pojawią się w zakładkach poniżej.
-
----
-
-### Zakładki z danymi
-
-Po wczytaniu danych dostępne są cztery zakładki:
-
-#### Prognoza pogody
-Wyświetla aktualną pogodę oraz prognozę dla kolejnych punktów czasowych (co 3 godziny, przez 5 dni). Z listy rozwijanej możesz wybrać konkretny moment i zobaczyć jego parametry: temperaturę, temperaturę odczuwalną, wilgotność, ciśnienie atmosferyczne, prędkość wiatru oraz opis. Dla punktów prognozy wyświetlane jest również prawdopodobieństwo opadów.
-
-#### Wykresy prognozy danych pogodowych
-Wykresy zmian parametrów pogodowych w czasie: temperatury (rzeczywistej i odczuwalnej), wilgotności, ciśnienia atmosferycznego oraz prędkości wiatru. Wykresy można przewijać poziomo, jeśli obejmują długi przedział czasowy.
-
-#### Analiza statystyczna prognozowanych danych pogodowych
-Statystyki prognozowanych danych pogodowych pogrupowane po dniach. Dostępne są dwa widoki:
-- **Podstawowe informacje** — minimalna, maksymalna i średnia temperatura, wilgotność, ciśnienie i prędkość wiatru.
-- **Pełne statystyki** — dodatkowo odchylenie standardowe dla wszystkich parametrów.
-
-#### Analiza historycznych danych pogodowych
-Przegląd danych zapisanych wcześniej do lokalnej bazy danych. Możesz wybrać miasto oraz zakres ostatnich X dni (suwak 1–90). 
+Then click **"Search weather data"**. The results appear in the tabs below.
 
 ---
 
-### Zapisywanie danych do bazy
+### Data tabs
 
-Dane pogodowe (aktualne + prognoza) można zapisać do lokalnej bazy danych na dwa sposoby:
+Once the data is loaded, four tabs are available:
 
-- **Ręcznie** — kliknij przycisk **„💾 Zapisz bieżące dane do bazy danych"** widoczny pod zakładkami po wyszukaniu miasta.
-- **Automatycznie** — włącz opcję **„Automatycznie zapisuj dane do bazy po każdym wyszukaniu"** w menu ustawień.
+#### Weather forecast
+Shows the current weather and the forecast for upcoming time points (every 3 hours, over 5 days). From the dropdown you can pick a specific moment and view its parameters: temperature, feels-like temperature, humidity, atmospheric pressure, wind speed, and a description. Forecast points also show the probability of precipitation.
 
-Zapisane dane są dostępne w zakładce **Analiza historycznych danych pogodowych**.
+#### Weather forecast charts
+Charts showing how weather parameters change over time: temperature (actual and feels-like), humidity, atmospheric pressure, and wind speed. The charts can be scrolled horizontally when they cover a long time range.
+
+#### Statistical analysis of forecast data
+Forecast statistics grouped by day. Two views are available:
+- **Basic information** — minimum, maximum, and average temperature, humidity, pressure, and wind speed.
+- **Full statistics** — additionally includes the standard deviation for all parameters.
+
+#### Historical weather data analysis
+A view of data previously saved to the local database. You can select a city and a range of the last X days (slider 1–90). 
 
 ---
 
-### Menu ustawień
+### Saving data to the database
 
-Menu ustawień znajduje się w prawym górnym rogu ekranu (przycisk **⚙️ Opcje**). Dostępne opcje:
+Weather data (current + forecast) can be saved to the local database in two ways:
 
-| Opcja | Opis |
+- **Manually** — click the **"💾Save current data to database"** button shown below the tabs after searching for a city.
+- **Automatically** — enable the **"Automatically save data to the database after each search"**option in the settings menu.
+
+Saved data is available in the **Historical weather data analysis** tab.
+
+---
+
+### Settings menu
+
+The settings menu is in the top-right corner of the screen (the **⚙️ Option** button). Available options:
+
+| Option | Description |
 |---|---|
-| **TTL cache (minuty)** | Czas ważności wyników wyszukiwania w pamięci podręcznej (5–60 min). Po upływie TTL kolejne wyszukanie tego samego miasta pobierze świeże dane z API. |
-| **Typ jednostki danych** | Wybór między jednostkami **SI (metryczne)** (°C, m/s) a **imperialnymi** (°F, mph). Zmiana jednostek czyści cache i bazę danych (dane w różnych jednostkach są ze sobą niespójne). |
-| **Automatycznie zapisuj dane** | Włącznik auto-zapisu do bazy po każdym wyszukaniu. |
-| **Wyczyść cache** | Usuwa tymczasowo zapisane wyniki wyszukiwań z pamięci sesji. |
-| **Wyczyść bazę danych** | Usuwa wszystkie rekordy z lokalnej bazy historycznej (operacja nieodwracalna). |
-| **💾 Zapisz ustawienia** | Zapisuje bieżące ustawienia (TTL, jednostki, auto-zapis) do pliku konfiguracyjnego — będą aktywne przy kolejnym uruchomieniu. |
+| **Cache TTL (minutes)** | How long search results stay valid in the cache (5–60 min). After the TTL expires, searching for the same city again fetches fresh data from the API. |
+| **Data unit type** | Choose between **SI (metric)** units (°C, m/s) and **imperial** units (°F, mph).Changing units clears the cache and the database (data in different units is inconsistent). |
+| **Automatically save data** | Toggle for auto-saving to the database after each search. |
+| **Clear cache** | Removes temporarily stored search results from the session memory. |
+| **Clear database** | Removes all records from the local history database (irreversible operation). |
+| **💾 Save settings** | Saves the current settings (TTL, units, auto-save) to a configuration file — they will be active on the next launch. |
 
 ---
 
-## Testy jednostkowe
-
-### Uruchamianie testów jednostkowych
-
-Projekt zawiera 77 testów jednostkowych pokrywających komunikację z API, cache, bazę danych oraz analizę danych.
-
-```
-python -m pytest tests/ -v
-```
 
 
